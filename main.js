@@ -72,7 +72,7 @@ module.exports.loop = function () {
         } else if(miners.length < numSources*3) {
             var mySource = getSourceWithLeastMiners();
             var newName = Game.spawns.Spawn1.createCreep(default_parts, undefined, {role: 'miner', assigned_source: mySource});
-            console.log('Spawning new miner: ' + newName + ' assigned to Source ' + mySource);
+            console.log('Spawning new miner: ' + newName + ' assigned to Source ' + mySource.id);
             console.log('We now have a total of ' + (miners.length+1)  + ' miners')
         }else if(upgraders.length < 10) {
             var newName = Game.spawns.Spawn1.createCreep(default_parts, undefined, {role: 'upgrader'});
