@@ -7,9 +7,12 @@ var roleHauler    = require('role.hauler');
 function findMySources() {
 	var sources = [] ;
 	var rooms_with_sources = _.filter(Game.rooms, (room) => room.find(FIND_SOURCES) != null); // find rooms with sources
-	for (var i = 0; i < rooms_with_sources.length; i++) { 
-		sources = sources.concat(_.filter(rooms_with_sources[i].find(FIND_SOURCES))) ; // Add found sources to 'sources' array
-		} ;
+	for (var i = 0; i < rooms_with_sources.length; i++) {
+    source_keepers = rooms_with_sources[i].find(FIND_HOSTILE_CREEPS, {
+      filter:function(enemy){enemy.owner.username === 'Source Keeper'}}); // find source keepers in the rooms
+    local_sources = _.filter(rooms_with_sources[i].find(FIND_SOURCES))) ; // Add found sources to 'local_sources' array
+    sources = sources.concat(local_sources) //TODO: Remove from local_sources all sources near a source keeper
+    } ;
 	
 	return sources
 }
@@ -19,8 +22,8 @@ function getSourceWithLeastMiners() {
 	var workers_assigned = [] ;
 	var sources = findMySources();
 	for (var i = 0; i < sources.length; i++) {
-		var assigned = _.filter(Game.creeps, (creep) => creep.memory.assigned_source == sources[i]);
-		if(assigned) {
+		var assigned = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.assigned_source.id == sources[i].id);u
+    if(assigned) {
 			workers_assigned[i] = assigned.length;
 			} else {
 			workers_assigned[i] = 0;
